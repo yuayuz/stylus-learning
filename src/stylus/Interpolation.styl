@@ -1,0 +1,27 @@
+// Stylus 支持插值，方法是使用{}字符包围表达式，然后使其成为标识符的一部分。
+vendor(prop, args)
+  -webkit-{prop} args
+  -moz-{prop} args
+  {prop} args
+
+border-radius()
+  vendor('border-radius', arguments)
+
+box-shadow()
+  vendor('box-shadow', arguments)
+
+button
+  border-radius 1px 2px / 3px 4px
+
+//选择器插值: 插值也适用于选择器
+// 如,可以迭代分配height表中前 5 行的属性
+table
+  for row in 1 2 3 4 5
+    tr:nth-child({row})
+      height: 10px * row
+
+// 可以通过构建字符串并就地插入它们，将多个选择器组合到一个变量中
+mySelectors = '#foo,#bar,.baz'
+
+{mySelectors}
+  background: #000
