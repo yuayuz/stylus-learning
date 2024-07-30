@@ -10,6 +10,7 @@ const handleRouter = function (page: string) {
   <div>
     <h1>Home</h1>
   </div>
+  <button @click="handleRouter('Selectors')">Selectors</button>
 </template>
 
 <style scoped>
