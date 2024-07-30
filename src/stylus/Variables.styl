@@ -1,0 +1,46 @@
+// 变量
+// 可以将表达式分配给变量并在整个样式表中使用它们
+// 可以由表达式列表组成
+// 标识符（变量名、函数等）也可能包含该$字符
+// 不能使用 null 来创建空变量，使用括号()创建空变量
+$font-size=15px
+font-stack = "Lucida Grande", Arial, sans-serif
+empty=()
+body
+  font $font-size font-stack empty
+
+// 属性查找
+// Stylus 的另一个独特功能是能够引用已定义的属性，而无需将其值分配给变量。
+// 一个很好的例子是垂直和水平居中元素所需的逻辑（通常使用百分比和负边距完成，如下所示）
+// 在属性名称前面添加字符 @ 即可访问该值
+#logo
+  position: absolute
+  top: 50%
+  left: 50%
+  width: w = 150px
+  height: h = 80px
+  margin-left: -(w / 2)
+  margin-top: -(h / 2)
+
+#logo
+  position: absolute
+  top: 50%
+  left: 50%
+  width: 150px
+  height: 80px
+  margin-left: -(@width / 2)
+  margin-top: -(@height / 2)
+
+// 另一个用例是根据其他属性的存在有条件地定义 mixin 中的属性。
+// 在下面的例子中，我们应用了默认值z-index—1但仅当z-index先前未指定时
+position()
+  position: arguments
+  z-index: 1 unless @z-index
+
+#logo
+  z-index: 20
+  position: absolute
+
+#logo2
+  position: absolute
+// 属性查找将“冒泡”堆栈直至找到，null如果无法解析属性，则返回
