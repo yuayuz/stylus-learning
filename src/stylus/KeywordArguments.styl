@@ -1,0 +1,11 @@
+// 关键字参数: Stylus 支持关键字参数，即“kwargs”,允许通过关联的参数名称引用参数。
+body {
+  color: rgba(255, 200, 100, 0.5);
+  color: rgba(red: 255, green: 200, blue: 100, alpha: 0.5);
+  color: rgba(alpha: 0.5, blue: 100, red: 255, 200);
+  color: rgba(alpha: 0.5, blue: 100, 255, 200);
+}
+// 要查看函数或mixin接受的参数，请使用以下p()函数：
+p(rgba)
+// inspect: rgba(red, green, blue, alpha)
+
