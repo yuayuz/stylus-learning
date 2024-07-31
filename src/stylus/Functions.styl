@@ -1,0 +1,161 @@
+// Stylus强大之处就在于其内置的语言函数定义。其定义与混入(mixins)一致,但是可以返回值
+
+// 返回值
+add(a, b)
+  a + b
+
+body
+  margin add(10px, 5)
+
+// 参数默认值
+add(a, b = 20)
+  a + b
+
+div
+  padding add(20px)
+
+// 由于参数默认值是赋值，我们也可以使用函数调用来获取默认值：
+add(a, b = unit(a, px))
+  a + b
+
+// 命名参数: 函数接受命名参数。注意是':'号
+div
+  margin add(a:10, b:10)
+
+// 函数体
+// 可以进一步完善函数add()。通过内置unit()把单位都变成px赋值在每个参数上，因此，我们可以无视单位换算。
+add(a, b = a)
+  a = unit(a, px)
+  b = unit(b, px)
+  a + b
+
+body
+  margin add(15%, 10deg)
+
+// => 25px
+
+// 多个返回值: Stylus 函数可以返回多个值 - 就像可以为变量分配多个值一样。
+sizes = 15px 10px
+
+sizes[0]
+// => 15px
+
+// 当返回值是标识符时,为了消除歧义,可以用括号括起来，或者使用return关键字
+swap(a, b)
+  (b a)
+
+swap(a, b)
+  return b a
+
+// 条件语句
+// 假设想要创建一个名为 的函数stringish()来确定参数是否可以转换为字符串。
+// 检查是val字符串还是 ident（类似于字符串）。
+// 由于未定义的标识符会将自身作为值，因此可以将它们与自身进行比较，
+// 如下所示（其中yes和no代替true和false）
+// 注意：yes和no不是布尔文字。在这种情况下，它们只是未定义的标识符
+stringish(val)
+  if val is a 'string' or val is a 'ident'
+    yes
+  else
+    no
+
+// 用法
+stringish('yay') == yes
+// => true
+
+stringish(yay) == yes
+// => true
+
+stringish(0) == no
+// => true
+
+// 示例
+compare(a, b)
+  if a > b
+    higher
+  else if a < b
+    lower
+  else
+    equal
+// 用法
+compare(5, 2)
+// => higher
+
+compare(1, 5)
+// => lower
+
+compare(10, 10)
+// => equal
+
+// 别名: 要为函数添加别名，只需将函数名称分配给新标识符即可。
+plus = add
+div
+  margin plus(1,2)
+
+// 变量函数#
+// 就像可以为函数添加“别名”一样，也可以传递函数。
+// 在这里，invoke()函数接受一个函数，因此可以传递它add()或sub()
+add(a, b)
+  a + b
+
+sub(a, b)
+  a - b
+
+invoke(a, b, fn)
+  fn(a, b)
+
+body
+  padding invoke(5, 10, add)
+  margin invoke(15, 10, sub)
+
+// 匿名函数: 可以在需要时使用语法来使用匿名函数@(){}
+sort(list, fn = null)
+  // default sort function
+  if fn == null
+    fn = @(a, b) {
+      a > b
+    }
+
+  // bubble sort
+  for $i in 1..length(list) - 1
+    for $j in 0..$i - 1
+      if fn(list[$j], list[$i])
+        $temp = list[$i]
+        list[$i] = list[$j]
+        list[$j] = $temp
+  return list
+
+  sort('e' 'c' 'f' 'a' 'b' 'd')
+  // => 'a' 'b' 'c' 'd' 'e' 'f'
+
+  sort(5 3 6 1 2 4, @(a, b){
+    a < b
+  })
+// => 6 5 4 3 2 1
+
+// 參數: 本地arguments可用于所有函数体，并包含传递的所有参数
+sum()
+  n = 0
+  for num in arguments
+    n = n + num
+
+sum(1,2,3,4,5)
+// => 15
+
+// 哈希示例
+// 定义get(hash, key)方法，用来返回key值或null.
+// 遍历每个键值对，如果键值匹配，返回对应的值
+// ?
+get(hash, key)
+  return pair[1] if pair[0] == key for pair in hash
+
+hash = (one 1) (two 2) (three 3)
+
+get(hash, two)
+// => 2
+
+get(hash, three)
+// => 3
+
+get(hash, something)
+// => null
