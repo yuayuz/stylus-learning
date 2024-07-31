@@ -1,0 +1,29 @@
+// 剩余参数: Stylus支持name...形式的其余参数。这些参数可以传递给混写或函数的参数
+box-shadow(args...)
+  -webkit-box-shadow args
+  -moz-box-shadow args
+  box-shadow args
+
+#login
+  box-shadow 1px 2px 5px #eee
+
+// 参数: 变量arguments被注入到 mixin 和函数体中，包含传递的精确表达式。
+// 这很有用，因为可以获得精确的表达式（包括逗号和所有内容）
+// 如果使用 rest 参数，则会消耗逗号（因为它是表达式分隔符）
+// reset
+box-shadow(args...)
+  -webkit-box-shadow args
+  -moz-box-shadow args
+  box-shadow args
+
+#login
+  box-shadow #ddd 1px 1px, #eee 2px 2px
+// 与官方文档结果不同,生成的css中含有逗号
+
+box-shadow()
+  -webkit-box-shadow arguments
+  -moz-box-shadow arguments
+  box-shadow arguments
+
+body
+  box-shadow #ddd 1px 1px, #eee 2px 2px
