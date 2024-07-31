@@ -1,0 +1,62 @@
+// 混合和函数的定义方式相同，但是应用方式不同
+// 例如，我们有一个border-radius(n)下面定义的函数，它作为mixin调用（即，作为语句调用，而不是表达式的一部分）。
+// 在选择器中调用时border-radius()，属性将展开并复制到选择器中。
+border-radius(n)
+  -webkit-border-radius n
+  -moz-border-radius n
+  border-radius n
+
+form input[type=button]
+  border-radius 5px
+
+//当使用 mixins 时，您可以完全省略括号，从而提供出色的透明供应商属性支持！
+// mixin 被视为属性，而不是递归函数调用
+
+// 可以使用插值 {param}
+border(side, args...)
+  if side
+    border-{side} args
+  else
+    border args
+
+.border-thick
+  border('left', 10px, 'darkred')
+
+.border
+  border('', 1px, 'darkred')
+
+// 父级引用
+// Mixins 可以使用父引用字符&，作用于父级，而不是进一步嵌套。
+
+// 块混合
+// 你可以通过调用带前缀+的 mixin 将块传递给 mixin
+// 递的块将作为变量在 mixin 内部可用block，然后可以与插值一起使用
+foo()
+  .bar
+    {block}
+
++foo()
+  width: 10px
+
+// ?
+.bar {
+  width: 10px;
+}
+
+// 在 Mixins 中混合 Mixins
+// Mixins 可以利用其他 mixin，并基于它们自己的选择器和属性进行构建
+// 创建comma-list()内联（通过inline-list()）并以逗号分隔的无序列表。
+inline-list()
+  li
+    display inline
+
+comma-list()
+  inline-list()
+  li
+    &:after
+      content ', '
+    &:last-child:after
+      content ''
+
+ul
+  comma-list()

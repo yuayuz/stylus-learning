@@ -1,0 +1,26 @@
+form input[type=button] {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+.border-thick {
+  border-left: 10px 'darkred';
+}
+.border {
+  border: 1px 'darkred';
+}
+.bar {
+  width: 10px;
+}
+.bar {
+  width: 10px;
+}
+ul li {
+  display: inline;
+}
+ul li:after {
+  content: ', ';
+}
+ul li:last-child:after {
+  content: '';
+}
